@@ -1,11 +1,11 @@
 package com.mitroshin.trex.network.api
 
-import com.mitroshin.trex.network.dto.CompanyDto
+import com.mitroshin.trex.network.dto.CompanyResponseDto
 import io.reactivex.Single
 import retrofit2.http.GET
 
 interface CompanyApi {
 
     @GET("8d024")
-    fun fetchCompanyList(): Single<CompanyDto>
+    fun fetchCompanyList(): Single<CompanyResponseDto>
 }

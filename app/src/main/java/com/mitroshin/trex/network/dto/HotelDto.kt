@@ -1,16 +1,18 @@
 package com.mitroshin.trex.network.dto
 
 import com.squareup.moshi.Json
-import se.ansman.kotshi.JsonSerializable
 
-@JsonSerializable
+data class HotelResponseDto(
+    @Json(name = "success") val success: Boolean,
+    @Json(name = "data") val data: HotelListDto
+)
+
 data class HotelListDto(
 
     @Json(name = "hotels")
     val hotelList: List<HotelDto>
 )
 
-@JsonSerializable
 data class HotelDto(
 
     @Json(name = "id")

@@ -1,9 +1,12 @@
 package com.mitroshin.trex.network.dto
 
 import com.squareup.moshi.Json
-import se.ansman.kotshi.JsonSerializable
 
-@JsonSerializable
+data class FlightResponseDto(
+    @Json(name = "success") val success: Boolean,
+    @Json(name = "data") val data: FlightListDto
+)
+
 data class FlightListDto(
 
     @Json(name = "flights")
@@ -11,7 +14,6 @@ data class FlightListDto(
 )
 
 
-@JsonSerializable
 data class FlightDto(
 
     @Json(name = "id")
