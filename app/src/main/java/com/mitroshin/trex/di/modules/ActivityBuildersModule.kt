@@ -1,6 +1,6 @@
 package com.mitroshin.trex.di.modules
 
-import com.mitroshin.trex.MainActivity
+import com.mitroshin.trex.ui.FlightListActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -8,5 +8,5 @@ import dagger.android.ContributesAndroidInjector
 abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector
-    abstract fun contributeMainActivity(): MainActivity
+    abstract fun contributeFlightListActivity(): FlightListActivity
 }
