@@ -1,18 +1,16 @@
 package com.mitroshin.trex.network.dto
 
 import com.squareup.moshi.Json
+import se.ansman.kotshi.JsonSerializable
 
-data class CompanyResponseDto(
-    @Json(name = "success") val success: Boolean,
-    @Json(name = "data") val data: CompanyListDto
-)
-
+@JsonSerializable
 data class CompanyListDto(
 
     @Json(name = "companies")
     val companyList: List<CompanyDto>
 )
 
+@JsonSerializable
 data class CompanyDto(
 
     @Json(name = "id")
