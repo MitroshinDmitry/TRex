@@ -16,7 +16,8 @@ import javax.inject.Inject
 class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     @Inject lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
-    lateinit var tourAdapter: TourAdapter
+    @Inject lateinit var tourAdapter: TourAdapter
+    @Inject lateinit var layoutManager: RecyclerView.LayoutManager
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return supportFragmentInjector
@@ -26,14 +27,8 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        tourAdapter = TourAdapter()
-
         with(recycler_view) {
-            layoutManager = LinearLayoutManager(
-                this@TourListActivity,
-                RecyclerView.VERTICAL,
-                false
-            )
+            layoutManager = this@TourListActivity.layoutManager
             adapter = tourAdapter
         }
 
