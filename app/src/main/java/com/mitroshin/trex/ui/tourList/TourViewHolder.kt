@@ -3,7 +3,7 @@ package com.mitroshin.trex.ui.tourList
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.mitroshin.trex.R
-import com.mitroshin.trex.model.Tour
+import com.mitroshin.trex.model.tour.Tour
 import kotlinx.android.synthetic.main.item_tour.view.*
 
 class TourViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

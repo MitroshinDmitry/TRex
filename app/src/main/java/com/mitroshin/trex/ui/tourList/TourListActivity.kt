@@ -3,10 +3,9 @@ package com.mitroshin.trex.ui.tourList
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mitroshin.trex.R
-import com.mitroshin.trex.model.Tour
+import com.mitroshin.trex.model.tour.Tour
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector

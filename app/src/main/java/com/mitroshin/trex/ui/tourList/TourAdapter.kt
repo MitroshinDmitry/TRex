@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mitroshin.trex.R
-import com.mitroshin.trex.model.Tour
+import com.mitroshin.trex.model.tour.Tour
 
 class TourAdapter : RecyclerView.Adapter<TourViewHolder>() {
 

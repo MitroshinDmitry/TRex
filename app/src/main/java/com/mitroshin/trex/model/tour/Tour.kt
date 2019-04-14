@@ -1,4 +1,4 @@
-package com.mitroshin.trex.model
+package com.mitroshin.trex.model.tour
 
 data class Tour(
     val hotelName: String = "",
