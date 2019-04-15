@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.mitroshin.trex.R
-import com.mitroshin.trex.model.tour.Tour
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -30,75 +29,5 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
             layoutManager = this@TourListActivity.layoutManager
             adapter = tourAdapter
         }
-
-        tourAdapter.setTourList(
-            listOf(
-                Tour(
-                    "Hotel Name 0",
-                    3,
-                    2000
-                ),
-                Tour(
-                    "Hotel Name 1",
-                    3,
-                    2000
-                ),
-                Tour(
-                    "Hotel Name 2",
-                    3,
-                    2000
-                ),
-                Tour(
-                    "Hotel Name 3",
-                    3,
-                    2000
-                ),
-                Tour(
-                    "Hotel Name 4",
-                    3,
-                    2000
-                ),
-                Tour(
-                    "Hotel Name 5",
-                    3,
-                    2000
-                ),
-                Tour(
-                    "Hotel Name 6",
-                    3,
-                    2000
-                ),
-                Tour(
-                    "Hotel Name 7",
-                    3,
-                    2000
-                ),
-                Tour(
-                    "Hotel Name 8",
-                    3,
-                    2000
-                ),
-                Tour(
-                    "Hotel Name 9",
-                    3,
-                    2000
-                ),
-                Tour(
-                    "Hotel Name 10",
-                    3,
-                    2000
-                ),
-                Tour(
-                    "Hotel Name 11",
-                    3,
-                    2000
-                ),
-                Tour(
-                    "Hotel Name 12",
-                    3,
-                    2000
-                )
-            )
-        )
     }
 }

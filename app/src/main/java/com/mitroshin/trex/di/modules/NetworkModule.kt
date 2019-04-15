@@ -2,9 +2,6 @@ package com.mitroshin.trex.di.modules
 
 import com.mitroshin.trex.BuildConfig
 import com.mitroshin.trex.network.ApplicationJsonAdapterFactory
-import com.mitroshin.trex.network.api.CompanyApi
-import com.mitroshin.trex.network.api.FlightApi
-import com.mitroshin.trex.network.api.HotelApi
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -29,24 +26,6 @@ class NetworkModule {
             .addConverterFactory(provideConverterFactory())
             .addCallAdapterFactory(provideAdapterFactory())
             .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideCompanyApi(retrofit: Retrofit): CompanyApi {
-        return retrofit.create(CompanyApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideFlightApi(retrofit: Retrofit): FlightApi {
-        return retrofit.create(FlightApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideHotelApi(retrofit: Retrofit): HotelApi {
-        return retrofit.create(HotelApi::class.java)
     }
 
     private fun provideOkHttpClient(withLoggingInterceptor: Boolean = false): OkHttpClient {
