@@ -5,9 +5,11 @@ import com.mitroshin.trex.network.dto.FlightListDto
 import com.mitroshin.trex.network.dto.HotelDto
 import com.mitroshin.trex.network.dto.HotelListDto
 import com.mitroshin.trex.util.FlightListValidator
-import java.lang.IllegalStateException
+import javax.inject.Inject
 
-class TourMapper(private val flightListValidator: FlightListValidator) {
+class TourMapper @Inject constructor(
+    private val flightListValidator: FlightListValidator
+) {
 
     fun map(hotelListDto: HotelListDto, flightListDto: FlightListDto): List<Tour> {
         return hotelListDto.hotelList.map { hotelDto ->

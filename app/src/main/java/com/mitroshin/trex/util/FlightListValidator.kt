@@ -3,8 +3,9 @@ package com.mitroshin.trex.util
 import com.mitroshin.trex.exceptions.FlightExceptions
 import com.mitroshin.trex.network.dto.FlightListDto
 import com.mitroshin.trex.network.dto.HotelDto
+import javax.inject.Inject
 
-class FlightListValidator {
+class FlightListValidator @Inject constructor() {
 
     fun isValid(flightListDto: FlightListDto, hotelDto: HotelDto): Boolean {
         if (hotelDto.flightList.isEmpty()) {

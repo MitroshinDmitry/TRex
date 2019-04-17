@@ -18,9 +18,10 @@ import javax.inject.Inject
 class FetchTourInteractor @Inject constructor(
     private val hotelRepository: HotelRepository,
     private val flightRepository: FlightRepository,
-    private val tourMapper: TourMapper,
-    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+    private val tourMapper: TourMapper
 ) {
+
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     sealed class Result {
         data class Success(val tourList: List<Tour>): Result()

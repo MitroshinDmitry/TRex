@@ -8,9 +8,7 @@ import dagger.Provides
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
-@Module(includes = [
-    NetworkModule::class
-])
+@Module
 class ApiModule {
 
     @Provides

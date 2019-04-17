@@ -1,8 +1,11 @@
 package com.mitroshin.trex.repository
 
 import com.mitroshin.trex.network.api.HotelApi
+import javax.inject.Inject
 
-class HotelRepository(private val api: HotelApi) {
+class HotelRepository @Inject constructor(
+    private val api: HotelApi
+) {
 
     fun fetchHotelList() = api.fetchHotelList()
 }
