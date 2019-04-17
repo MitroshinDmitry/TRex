@@ -3,15 +3,12 @@ package com.mitroshin.trex.di.modules
 import com.mitroshin.trex.ui.tourList.TourListActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import javax.inject.Singleton
 
-@Module
+@Module(includes = [
+    ViewModelModule::class
+])
 abstract class ActivityBuildersModule {
 
-    // Todo need to define custom scope for activity
-    @Singleton
-    @ContributesAndroidInjector(modules = [
-        TourListModule::class
-    ])
+    @ContributesAndroidInjector
     abstract fun contributeTourListActivity(): TourListActivity
 }

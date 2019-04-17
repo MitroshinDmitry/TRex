@@ -3,8 +3,12 @@ package com.mitroshin.trex.ui.tourList
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mitroshin.trex.R
+import com.mitroshin.trex.viewModel.TourListViewModel
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -14,8 +18,12 @@ import javax.inject.Inject
 class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     @Inject lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
-    @Inject lateinit var tourAdapter: TourAdapter
-    @Inject lateinit var layoutManager: RecyclerView.LayoutManager
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var tourAdapter: TourAdapter
+    lateinit var layoutManager: RecyclerView.LayoutManager
+
+    private lateinit var viewModel: TourListViewModel
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return supportFragmentInjector
@@ -25,9 +33,16 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        tourAdapter = TourAdapter()
+        layoutManager = LinearLayoutManager(this)
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(TourListViewModel::class.java)
+
         with(recycler_view) {
             layoutManager = this@TourListActivity.layoutManager
             adapter = tourAdapter
         }
+
+        viewModel.fetchTourList()
     }
 }

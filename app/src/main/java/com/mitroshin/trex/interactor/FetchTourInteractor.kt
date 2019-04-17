@@ -13,20 +13,25 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import javax.inject.Inject
 
-class FetchTourInteractor(private val hotelRepository: HotelRepository,
-                          private val flightRepository: FlightRepository,
-                          private val tourMapper: TourMapper,
-                          private val compositeDisposable: CompositeDisposable = CompositeDisposable()) {
+class FetchTourInteractor @Inject constructor(
+    private val hotelRepository: HotelRepository,
+    private val flightRepository: FlightRepository,
+    private val tourMapper: TourMapper,
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+) {
 
     sealed class Result {
         data class Success(val tourList: List<Tour>): Result()
         data class Error(val throwable: Throwable): Result()
     }
 
-    private val fetchTourResultSubject: BehaviorSubject<Result> = BehaviorSubject.create()
+    private val fetchTourListResultSubject: BehaviorSubject<Result> = BehaviorSubject.create()
 
-    fun fetchTourList(): Observable<Result> {
+    val fetchTourListObservable: Observable<Result> = fetchTourListResultSubject
+
+    fun fetchTourList() {
         val handleFunction = BiFunction<HotelListDto, FlightListDto, List<Tour>> { hotelList, flightList ->
             tourMapper.map(hotelList, flightList)
         }
@@ -41,13 +46,12 @@ class FetchTourInteractor(private val hotelRepository: HotelRepository,
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        fetchTourResultSubject.onNext(Result.Success(it))
+                        fetchTourListResultSubject.onNext(Result.Success(it))
                     },
                     {
-                        fetchTourResultSubject.onNext(Result.Error(it))
+                        fetchTourListResultSubject.onNext(Result.Error(it))
                     }
                 )
         )
-        return fetchTourResultSubject
     }
 }
