@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">TRex</string>
     <string name="from_min_price_rub">от %1$s р</string>
+
     <plurals name="count_of_flight_variant">
         <item quantity="one">%1$d вариант перелета</item>
         <item quantity="few">%1$d варианта перелета</item>
         <item quantity="many">%1$d вариантов перелета</item>
         <item quantity="other">%1$d вариантов перелета</item>
     </plurals>
+
+    <string name="choose_company">Выберите Авиакомпанию</string>
+    <string name="confirm">Подтвердить</string>
 </resources>

@@ -1,27 +1,33 @@
 package com.mitroshin.trex.ui.tourList
 
 import android.view.View
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.mitroshin.trex.R
 import com.mitroshin.trex.model.tour.Tour
 import kotlinx.android.synthetic.main.item_tour.view.*
 
-class TourViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class TourViewHolder(
+    itemView: View,
+    private val mutableUserAction: MutableLiveData<TourListActivity.UserAction>
+    ) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(data: Tour) {
+    fun bind(tour: Tour) {
         with(itemView) {
 
-            hotel_name_text_view.text = data.hotelName
+            setOnClickListener { mutableUserAction.value = TourListActivity.UserAction.ClickOnTour(tour) }
+
+            hotel_name_text_view.text = tour.hotelName
 
             count_of_flight_text_view.text = itemView.resources.getQuantityString(
                 R.plurals.count_of_flight_variant,
-                data.countOfFlight,
-                data.countOfFlight
+                tour.countOfFlight,
+                tour.countOfFlight
             )
 
             min_price_text_view.text = String.format(
                 itemView.resources.getString(R.string.from_min_price_rub),
-                data.minPrice
+                tour.minPrice
             )
         }
     }
