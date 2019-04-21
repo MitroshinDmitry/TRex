@@ -10,8 +10,15 @@ class TourViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(data: Tour) {
         with(itemView) {
+
             hotel_name_text_view.text = data.hotelName
-            count_of_flight_text_view.text = data.countOfFlight.toString()
+
+            count_of_flight_text_view.text = itemView.resources.getQuantityString(
+                R.plurals.count_of_flight_variant,
+                data.countOfFlight,
+                data.countOfFlight
+            )
+
             min_price_text_view.text = String.format(
                 itemView.resources.getString(R.string.from_min_price_rub),
                 data.minPrice

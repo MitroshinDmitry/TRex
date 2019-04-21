@@ -3,6 +3,7 @@ package com.mitroshin.trex.ui.tourList
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +38,9 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
         layoutManager = LinearLayoutManager(this)
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(TourListViewModel::class.java)
+        viewModel.state.observe(this, Observer {
+            handleState(it)
+        })
 
         with(recycler_view) {
             layoutManager = this@TourListActivity.layoutManager
@@ -44,5 +48,13 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
 
         viewModel.fetchTourList()
+    }
+
+    private fun handleState(state: TourListViewModel.State) {
+        when (state) {
+            is TourListViewModel.State.TourList -> {
+                tourAdapter.setTourList(state.data)
+            }
+        }
     }
 }
