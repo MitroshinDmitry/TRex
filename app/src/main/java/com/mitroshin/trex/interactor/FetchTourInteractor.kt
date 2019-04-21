@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.mitroshin.trex.model.tour.Tour
 import com.mitroshin.trex.model.tour.TourMapper
-import com.mitroshin.trex.network.dto.CompanyDto
+import com.mitroshin.trex.network.dto.CompanyListDto
 import com.mitroshin.trex.network.dto.FlightListDto
 import com.mitroshin.trex.network.dto.HotelListDto
 import com.mitroshin.trex.repository.CompanyRepository
@@ -13,7 +13,6 @@ import com.mitroshin.trex.repository.HotelRepository
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -39,13 +38,14 @@ class FetchTourInteractor @Inject constructor(
         val handleFunction = Function3<
                 HotelListDto,
                 FlightListDto,
-                CompanyDto,
+                CompanyListDto,
                 List<Tour>> { hotelList, flightList, companyList ->
             tourMapper.map(hotelList, flightList, companyList)
         }
         val singleZip = Single.zip(
             hotelRepository.fetchHotelList(),
             flightRepository.fetchFlightList(),
+            companyRepository.fetchCompanyLisy(),
             handleFunction
         )
         compositeDisposable.add(

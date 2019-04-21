@@ -1,60 +1,62 @@
 package com.mitroshin.trex
 
 import com.mitroshin.trex.exceptions.FlightExceptions
+import com.mitroshin.trex.model.company.Company
+import com.mitroshin.trex.model.company.CompanyMapper
 import com.mitroshin.trex.model.tour.Tour
 import com.mitroshin.trex.model.tour.TourMapper
-import com.mitroshin.trex.network.dto.FlightDto
-import com.mitroshin.trex.network.dto.FlightListDto
-import com.mitroshin.trex.network.dto.HotelDto
-import com.mitroshin.trex.network.dto.HotelListDto
+import com.mitroshin.trex.network.dto.*
 import com.mitroshin.trex.util.FlightListValidator
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class TourMapperTest {
 
-    private val sut = TourMapper(FlightListValidator())
+    private val sut = TourMapper(
+        FlightListValidator(),
+        CompanyMapper()
+    )
 
     private val flightListDto = FlightListDto(
         flightList = listOf(
             FlightDto(
                 id = 0,
-                companyId = -1,
+                companyId = 0,
                 departure = "time_of_departure",
                 arrival = "time_of_arrival",
                 price = 100
             ),
             FlightDto(
                 id = 1,
-                companyId = -1,
+                companyId = 1,
                 departure = "time_of_departure",
                 arrival = "time_of_arrival",
                 price = 200
             ),
             FlightDto(
                 id = 2,
-                companyId = -1,
+                companyId = 1,
                 departure = "time_of_departure",
                 arrival = "time_of_arrival",
                 price = 300
             ),
             FlightDto(
                 id = 3,
-                companyId = -1,
+                companyId = 2,
                 departure = "time_of_departure",
                 arrival = "time_of_arrival",
                 price = 400
             ),
             FlightDto(
                 id = 4,
-                companyId = -1,
+                companyId = 0,
                 departure = "time_of_departure",
                 arrival = "time_of_arrival",
                 price = 500
             ),
             FlightDto(
                 id = 5,
-                companyId = -1,
+                companyId = 2,
                 departure = "time_of_departure",
                 arrival = "time_of_arrival",
                 price = 600
@@ -99,31 +101,80 @@ class TourMapperTest {
         )
     )
 
+    private val companyListDto = CompanyListDto(
+        companyList = listOf(
+            CompanyDto(
+                id = 0,
+                name = "company_name_0"
+            ),
+            CompanyDto(
+                id = 1,
+                name = "company_name_1"
+            ),
+            CompanyDto(
+                id = 2,
+                name = "company_name_2"
+            )
+        )
+    )
+
     @Test
     fun should_return_tour_list_with_min_price_for_flight_plus_price_for_hotel() {
         val expectedResultOfMap = listOf(
             Tour(
                 hotelName = "hotel_name_0",
                 countOfFlight = 3,
-                minPrice = 1000 + 100
+                minPrice = 1000 + 100,
+                companyList = listOf(
+                    Company(
+                        name = "company_name_0"
+                    ),
+                    Company(
+                        name = "company_name_1"
+                    )
+                )
             ),
             Tour(
                 hotelName = "hotel_name_1",
                 countOfFlight = 4,
-                minPrice = 2000 + 200
+                minPrice = 2000 + 200,
+                companyList = listOf(
+                    Company(
+                        name = "company_name_1"
+                    ),
+                    Company(
+                        name = "company_name_2"
+                    ),
+                    Company(
+                        name = "company_name_0"
+                    )
+                )
             ),
             Tour(
                 hotelName = "hotel_name_2",
                 countOfFlight = 2,
-                minPrice = 3000 + 400
+                minPrice = 3000 + 400,
+                companyList = listOf(
+                    Company(
+                        name = "company_name_2"
+                    ),
+                    Company(
+                        name = "company_name_0"
+                    )
+                )
             ),
             Tour(
                 hotelName = "hotel_name_3",
                 countOfFlight = 1,
-                minPrice = 4000 + 600
+                minPrice = 4000 + 600,
+                companyList = listOf(
+                    Company(
+                        name = "company_name_2"
+                    )
+                )
             )
         )
-        val actualResultOfMap = sut.map(hotelListDto, flightListDto)
+        val actualResultOfMap = sut.map(hotelListDto, flightListDto, companyListDto)
 
         Assertions.assertEquals(expectedResultOfMap, actualResultOfMap)
     }
@@ -142,7 +193,7 @@ class TourMapperTest {
         )
 
         Assertions.assertThrows(FlightExceptions.EmptyFlightList::class.java) {
-            sut.map(hotelListDto, flightListDto)
+            sut.map(hotelListDto, flightListDto, companyListDto)
         }
     }
 
@@ -162,7 +213,7 @@ class TourMapperTest {
         )
 
         Assertions.assertThrows(FlightExceptions.IllegalFlightOnHotel::class.java) {
-            sut.map(hotelListDto, flightListDto)
+            sut.map(hotelListDto, flightListDto, companyListDto)
         }
     }
 }

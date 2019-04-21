@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mitroshin.trex.R
+import com.mitroshin.trex.model.company.Company
 import com.mitroshin.trex.model.tour.Tour
 import com.mitroshin.trex.viewModel.TourListViewModel
 import dagger.android.AndroidInjector
@@ -93,7 +94,10 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.choose_company))
             .setSingleChoiceItems(
-                tour.companyList,
+                tour.companyList.map {
+                    it.name
+                }.toTypedArray(),
+                // Todo checked should be not a first one, but a cheapest one
                 0
             ) { dialog, which ->
                 mutableUserAction.value = UserAction.ConfirmTour(tour)
@@ -101,9 +105,9 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
             .setPositiveButton(
                 getString(R.string.confirm)
             ) { dialog, which ->
-                mutableUserAction.value = UserAction.PickCompany(tour.copy(
-                    pickedCompany =
-                ))
+//                mutableUserAction.value = UserAction.PickCompany(tour.copy(
+//                    pickedCompany =
+//                ))
             }
             .create()
             .show()
