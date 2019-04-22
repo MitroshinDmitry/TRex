@@ -7,5 +7,5 @@ class CompanyRepository @Inject constructor(
     private val api: CompanyApi
 ) {
 
-    fun fetchCompanyLisy() = api.fetchCompanyList()
+    fun fetchCompanyList() = api.fetchCompanyList()
 }

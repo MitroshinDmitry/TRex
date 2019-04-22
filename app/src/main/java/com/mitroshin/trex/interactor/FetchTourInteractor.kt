@@ -45,7 +45,7 @@ class FetchTourInteractor @Inject constructor(
         val singleZip = Single.zip(
             hotelRepository.fetchHotelList(),
             flightRepository.fetchFlightList(),
-            companyRepository.fetchCompanyLisy(),
+            companyRepository.fetchCompanyList(),
             handleFunction
         )
         compositeDisposable.add(

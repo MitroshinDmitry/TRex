@@ -216,4 +216,36 @@ class TourMapperTest {
             sut.map(hotelListDto, flightListDto, companyListDto)
         }
     }
+
+    @Test
+    fun should_throw_exception_if_flight_have_illegal_company() {
+        val flightListDto = FlightListDto(
+            listOf(
+                FlightDto(
+                    id = 5,
+                    companyId = -1,
+                    departure = "time_of_departure",
+                    arrival = "time_of_arrival",
+                    price = 600
+                )
+            )
+        )
+
+        val hotelListDto = HotelListDto(
+            listOf(
+                HotelDto(
+                    id = 3,
+                    flightList = listOf(
+                        5
+                    ),
+                    name = "hotel_without_flights",
+                    price = 4000
+                )
+            )
+        )
+
+        Assertions.assertThrows(FlightExceptions.IllegalCompanyOfFlight::class.java) {
+            sut.map(hotelListDto, flightListDto, companyListDto)
+        }
+    }
 }
