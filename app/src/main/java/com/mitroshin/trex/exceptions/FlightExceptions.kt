@@ -1,5 +1,6 @@
 package com.mitroshin.trex.exceptions
 
+import com.mitroshin.trex.network.dto.CompanyDto
 import com.mitroshin.trex.network.dto.FlightDto
 
 sealed class FlightExceptions(message: String): Exception(message) {
@@ -13,8 +14,10 @@ sealed class FlightExceptions(message: String): Exception(message) {
                 "Only next flight ids are available :$fullFlightIdList"
     )
 
-    class IllegalCompanyOfFlight(flightDto: FlightDto, fullCompanyIdList: List<Int>): FlightExceptions(
+    class IllegalCompanyOfFlight(flightDto: FlightDto, companyList: List<CompanyDto>): FlightExceptions(
         "Flight with id:${flightDto.id} contain illegal company with id:${flightDto.companyId} \n" +
-                "Only next companies ids are available :$fullCompanyIdList"
+                "Only next companies ids are available :${companyList.map {
+                    it.id
+                }}"
     )
 }

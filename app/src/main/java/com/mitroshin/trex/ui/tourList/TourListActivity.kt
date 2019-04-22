@@ -93,22 +93,22 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private fun showTourDialog(tour: Tour) {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.choose_company))
-            .setSingleChoiceItems(
-                tour.companyList.map {
-                    it.name
-                }.toTypedArray(),
-                // Todo checked should be not a first one, but a cheapest one
-                0
-            ) { dialog, which ->
-                mutableUserAction.value = UserAction.ConfirmTour(tour)
-            }
-            .setPositiveButton(
-                getString(R.string.confirm)
-            ) { dialog, which ->
-//                mutableUserAction.value = UserAction.PickCompany(tour.copy(
-//                    pickedCompany =
-//                ))
-            }
+//            .setSingleChoiceItems(
+//                tour.companyList.map {
+//                    it.name
+//                }.toTypedArray(),
+//                // Todo checked should be not a first one, but a cheapest one
+//                0
+//            ) { dialog, which ->
+//                mutableUserAction.value = UserAction.ConfirmTour(tour)
+//            }
+//            .setPositiveButton(
+//                getString(R.string.confirm)
+//            ) { dialog, which ->
+////                mutableUserAction.value = UserAction.PickCompany(tour.copy(
+////                    pickedCompany =
+////                ))
+//            }
             .create()
             .show()
     }

@@ -1,14 +1,13 @@
 package com.mitroshin.trex.model.tour
 
 import com.mitroshin.trex.exceptions.FlightExceptions
-import com.mitroshin.trex.model.company.CompanyMapper
+import com.mitroshin.trex.model.company.Company
 import com.mitroshin.trex.network.dto.*
 import com.mitroshin.trex.util.FlightListValidator
 import javax.inject.Inject
 
 class TourMapper @Inject constructor(
-    private val flightListValidator: FlightListValidator,
-    private val companyMapper: CompanyMapper
+    private val flightListValidator: FlightListValidator
 ) {
 
     fun map(hotelListDto: HotelListDto,
@@ -17,14 +16,11 @@ class TourMapper @Inject constructor(
     ): List<Tour> {
         return hotelListDto.hotelList.map { hotelDto ->
             val flightListForHotel = getFlightListForHotel(flightListDto, hotelDto)
-            val companyListForHotel = getCompanyListForFlightList(flightListForHotel, companyListDto)
             Tour(
                 hotelName = hotelDto.name,
                 countOfFlight = hotelDto.flightList.size,
-                minPrice = flightListForHotel.minBy {
-                    it.price
-                }!!.price + hotelDto.price,
-                companyList = companyMapper.map(companyListForHotel)
+                priceList = getTourPriceList(flightListForHotel, companyListDto),
+                priceForHotel = hotelDto.price
             )
         }
     }
@@ -39,19 +35,24 @@ class TourMapper @Inject constructor(
         }
     }
 
-    private fun getCompanyListForFlightList(flightList: List<FlightDto>,
-                                            companyListDto: CompanyListDto): List<CompanyDto> {
-        val fullCompanyIdList = companyListDto.companyList.map {
-            it.id
-        }
-        val resultWithDuplicates = flightList.map { flight ->
-            companyListDto.companyList.find {
-                it.id == flight.companyId
-            } ?: throw FlightExceptions.IllegalCompanyOfFlight(
-                flight,
-                fullCompanyIdList
+    private fun getTourPriceList(flightListForHotel: List<FlightDto>,
+                                 companyListDto: CompanyListDto): List<Tour.Price> {
+        return flightListForHotel.map { flight ->
+            Tour.Price(
+                company = getCompanyById(flight, companyListDto.companyList),
+                priceForFlight = flight.price
             )
         }
-        return resultWithDuplicates.distinct()
+    }
+
+    private fun getCompanyById(flight: FlightDto, companyList: List<CompanyDto>): Company {
+        return Company(
+            name = companyList.find {
+                flight.companyId == it.id
+            }?.name ?: throw FlightExceptions.IllegalCompanyOfFlight(
+                flight,
+                companyList
+            )
+        )
     }
 }

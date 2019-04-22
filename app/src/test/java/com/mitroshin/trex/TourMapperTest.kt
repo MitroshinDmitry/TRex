@@ -2,7 +2,6 @@ package com.mitroshin.trex
 
 import com.mitroshin.trex.exceptions.FlightExceptions
 import com.mitroshin.trex.model.company.Company
-import com.mitroshin.trex.model.company.CompanyMapper
 import com.mitroshin.trex.model.tour.Tour
 import com.mitroshin.trex.model.tour.TourMapper
 import com.mitroshin.trex.network.dto.*
@@ -13,8 +12,7 @@ import org.junit.jupiter.api.Test
 class TourMapperTest {
 
     private val sut = TourMapper(
-        FlightListValidator(),
-        CompanyMapper()
+        FlightListValidator()
     )
 
     private val flightListDto = FlightListDto(
@@ -124,52 +122,88 @@ class TourMapperTest {
             Tour(
                 hotelName = "hotel_name_0",
                 countOfFlight = 3,
-                minPrice = 1000 + 100,
-                companyList = listOf(
-                    Company(
-                        name = "company_name_0"
+                priceForHotel = 1000,
+                priceList = listOf(
+                    Tour.Price(
+                        company = Company(
+                            name = "company_name_0"
+                        ),
+                        priceForFlight = 100
                     ),
-                    Company(
-                        name = "company_name_1"
+                    Tour.Price(
+                        company = Company(
+                            name = "company_name_1"
+                        ),
+                        priceForFlight = 200
+                    ),
+                    Tour.Price(
+                        company = Company(
+                            name = "company_name_1"
+                        ),
+                        priceForFlight = 300
                     )
                 )
             ),
             Tour(
                 hotelName = "hotel_name_1",
                 countOfFlight = 4,
-                minPrice = 2000 + 200,
-                companyList = listOf(
-                    Company(
-                        name = "company_name_1"
+                priceForHotel = 2000,
+                priceList = listOf(
+                    Tour.Price(
+                        company = Company(
+                            name = "company_name_1"
+                        ),
+                        priceForFlight = 200
                     ),
-                    Company(
-                        name = "company_name_2"
+                    Tour.Price(
+                        company = Company(
+                            name = "company_name_1"
+                        ),
+                        priceForFlight = 300
                     ),
-                    Company(
-                        name = "company_name_0"
+                    Tour.Price(
+                        company = Company(
+                            name = "company_name_2"
+                        ),
+                        priceForFlight = 400
+                    ),
+                    Tour.Price(
+                        company = Company(
+                            name = "company_name_0"
+                        ),
+                        priceForFlight = 500
                     )
                 )
             ),
             Tour(
                 hotelName = "hotel_name_2",
                 countOfFlight = 2,
-                minPrice = 3000 + 400,
-                companyList = listOf(
-                    Company(
-                        name = "company_name_2"
+                priceForHotel = 3000,
+                priceList = listOf(
+                    Tour.Price(
+                        company = Company(
+                            name = "company_name_2"
+                        ),
+                        priceForFlight = 400
                     ),
-                    Company(
-                        name = "company_name_0"
+                    Tour.Price(
+                        company = Company(
+                            name = "company_name_0"
+                        ),
+                        priceForFlight = 500
                     )
                 )
             ),
             Tour(
                 hotelName = "hotel_name_3",
                 countOfFlight = 1,
-                minPrice = 4000 + 600,
-                companyList = listOf(
-                    Company(
-                        name = "company_name_2"
+                priceForHotel = 4000,
+                priceList = listOf(
+                    Tour.Price(
+                        company = Company(
+                            name = "company_name_2"
+                        ),
+                        priceForFlight = 600
                     )
                 )
             )
@@ -177,6 +211,16 @@ class TourMapperTest {
         val actualResultOfMap = sut.map(hotelListDto, flightListDto, companyListDto)
 
         Assertions.assertEquals(expectedResultOfMap, actualResultOfMap)
+
+        val expectedMinPriceList = listOf(
+            1100, 2200, 3400, 4600
+        )
+
+        val actualMinPriceList = actualResultOfMap.map {
+            it.minPrice
+        }
+
+        Assertions.assertEquals(expectedMinPriceList, actualMinPriceList)
     }
 
     @Test
