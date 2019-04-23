@@ -80,7 +80,10 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private fun handleState(state: TourListViewModel.State) {
         when (state) {
             is TourListViewModel.State.TourList -> {
-                tourAdapter.setTourList(state.data)
+                tourAdapter.setTourList(state.tourList)
+                state.previewTour?.let {
+                    showTourDialog(it)
+                }
             }
             is TourListViewModel.State.Loading -> {
                 progress_bar.isVisible = state.isLoading
@@ -94,7 +97,7 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private fun handleUserAction(action: UserAction) {
         when (action) {
             is UserAction.ClickOnTour -> {
-                showTourDialog(action.tour)
+                viewModel.pickCompany(action.tour)
             }
             is UserAction.ConfirmTour -> {
                 Toast.makeText(this, "Price : ${action.tour.fullPrice}", Toast.LENGTH_LONG).show()
@@ -128,6 +131,9 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 getString(R.string.confirm),
                 positiveClickListener
             )
+            .setOnDismissListener {
+                viewModel.clearPreviewTour()
+            }
             .create()
             .show()
     }

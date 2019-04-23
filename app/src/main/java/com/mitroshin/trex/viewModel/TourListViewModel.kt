@@ -21,7 +21,8 @@ class TourListViewModel @Inject constructor(
 
     sealed class State {
         data class Loading(val isLoading: Boolean) : State()
-        data class TourList(val data: List<Tour>): State()
+        data class TourList(val tourList: List<Tour>,
+                            val previewTour: Tour? = null): State()
         object Error : State()
     }
 
@@ -32,8 +33,23 @@ class TourListViewModel @Inject constructor(
         fetchTourInteractor.fetchTourList()
     }
 
+    fun pickCompany(tour: Tour) {
+        updateTourListState(tour)
+    }
+
+    fun clearPreviewTour() {
+        updateTourListState(null)
+    }
+
     override fun onCleared() {
         fetchTourInteractor.clearDisposable()
+    }
+
+    private fun updateTourListState(tour: Tour?) {
+        val currentValue = mediatorState.value as State.TourList
+        mediatorState.value = currentValue.copy(
+            previewTour = tour
+        )
     }
 
     private fun handleFetchTourResult(result: FetchTourInteractor.Result) {
