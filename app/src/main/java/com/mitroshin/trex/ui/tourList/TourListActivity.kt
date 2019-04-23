@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -50,7 +51,9 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
         initTourList()
         initViewModel()
 
-        viewModel.fetchTourList()
+        if (savedInstanceState == null) {
+            viewModel.fetchTourList()
+        }
     }
 
     private fun initTourList() {
@@ -78,6 +81,12 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
         when (state) {
             is TourListViewModel.State.TourList -> {
                 tourAdapter.setTourList(state.data)
+            }
+            is TourListViewModel.State.Loading -> {
+                progress_bar.isVisible = state.isLoading
+            }
+            is TourListViewModel.State.Error -> {
+                Toast.makeText(this, R.string.network_error, Toast.LENGTH_LONG).show()
             }
         }
     }

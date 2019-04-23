@@ -20,15 +20,15 @@ class TourListViewModel @Inject constructor(
     }
 
     sealed class State {
-        object Loading : State()
-        object Error : State()
+        data class Loading(val isLoading: Boolean) : State()
         data class TourList(val data: List<Tour>): State()
+        object Error : State()
     }
 
     val state: LiveData<State> = mediatorState
 
     fun fetchTourList() {
-        mediatorState.value = State.Loading
+        mediatorState.value = State.Loading(true)
         fetchTourInteractor.fetchTourList()
     }
 
@@ -37,6 +37,7 @@ class TourListViewModel @Inject constructor(
     }
 
     private fun handleFetchTourResult(result: FetchTourInteractor.Result) {
+        mediatorState.value = State.Loading(false)
         when (result) {
             is FetchTourInteractor.Result.Success -> {
                 mediatorState.value = State.TourList(result.tourList)

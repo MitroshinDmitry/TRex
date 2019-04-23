@@ -11,4 +11,6 @@
 
     <string name="choose_company">Выберите Авиакомпанию</string>
     <string name="confirm">Подтвердить</string>
+
+    <string name="network_error">Произошла ошибка. Проверьте подключение к интернету.</string>
 </resources>
