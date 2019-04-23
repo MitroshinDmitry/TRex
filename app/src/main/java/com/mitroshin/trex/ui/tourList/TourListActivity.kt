@@ -1,6 +1,8 @@
 package com.mitroshin.trex.ui.tourList
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -11,7 +13,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mitroshin.trex.R
-import com.mitroshin.trex.model.company.Company
 import com.mitroshin.trex.model.tour.Tour
 import com.mitroshin.trex.viewModel.TourListViewModel
 import dagger.android.AndroidInjector
@@ -35,7 +36,6 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     sealed class UserAction {
         data class ClickOnTour(val tour: Tour): UserAction()
-        data class PickCompany(val company: Company): UserAction()
         data class ConfirmTour(val tour: Tour): UserAction()
     }
 
@@ -87,28 +87,38 @@ class TourListActivity : AppCompatActivity(), HasSupportFragmentInjector {
             is UserAction.ClickOnTour -> {
                 showTourDialog(action.tour)
             }
+            is UserAction.ConfirmTour -> {
+                Toast.makeText(this, "Price : ${action.tour.fullPrice}", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
     private fun showTourDialog(tour: Tour) {
-        AlertDialog.Builder(this)
+        val sortedPriceList = tour.minSortedPriceList
+        val sortedCompanyList = sortedPriceList.map {
+            it.company.name + " : " + (it.priceForFlight + tour.priceForHotel)
+        }
+        val itemClickListener = DialogInterface.OnClickListener { _, _ -> }
+        val positiveClickListener = DialogInterface.OnClickListener { dialog, _ ->
+            val checkedPosition = (dialog as AlertDialog).listView.checkedItemPosition
+            mutableUserAction.value = UserAction.ConfirmTour(
+                tour.copy(
+                    chosenFlightPrice = sortedPriceList[checkedPosition]
+                )
+            )
+        }
+        val alertBuilder = AlertDialog.Builder(this)
+        alertBuilder
             .setTitle(getString(R.string.choose_company))
-//            .setSingleChoiceItems(
-//                tour.companyList.map {
-//                    it.name
-//                }.toTypedArray(),
-//                // Todo checked should be not a first one, but a cheapest one
-//                0
-//            ) { dialog, which ->
-//                mutableUserAction.value = UserAction.ConfirmTour(tour)
-//            }
-//            .setPositiveButton(
-//                getString(R.string.confirm)
-//            ) { dialog, which ->
-////                mutableUserAction.value = UserAction.PickCompany(tour.copy(
-////                    pickedCompany =
-////                ))
-//            }
+            .setSingleChoiceItems(
+                sortedCompanyList.toTypedArray(),
+                0,
+                itemClickListener
+            )
+            .setPositiveButton(
+                getString(R.string.confirm),
+                positiveClickListener
+            )
             .create()
             .show()
     }
